@@ -1,9 +1,12 @@
 # WE PLAY DAIFUGO
 
 This is a web app for playing the card game Daifugo. It is built using SvelteKit and Skeleton UI with Tailwind css.
-![SvelteKit Icon](https://svelte.dev/svelte-logo-horizontal.svg)
+<!-- ![SvelteKit Icon](https://svelte.dev/svelte-logo-horizontal.svg)
 ![Skeleton UI Icon](https://user-images.githubusercontent.com/1509726/199282306-7454adcb-b765-4618-8438-67655a7dee47.png) 
-![Tailwind css Icon](https://raw.githubusercontent.com/tailwindlabs/tailwindcss/HEAD/.github/logo-dark.svg)
+![Tailwind css Icon](https://raw.githubusercontent.com/tailwindlabs/tailwindcss/HEAD/.github/logo-dark.svg) -->
+<img src="https://svelte.dev/svelte-logo-horizontal.svg" style="max-width: 200px;">
+<img src="https://user-images.githubusercontent.com/1509726/199282306-7454adcb-b765-4618-8438-67655a7dee47.png" style="max-width: 200px;">
+<img src="https://raw.githubusercontent.com/tailwindlabs/tailwindcss/HEAD/.github/logo-dark.svg" style="max-width: 200px;">
 ## How to use
 To run the app in dev mode, follow these steps:
 
