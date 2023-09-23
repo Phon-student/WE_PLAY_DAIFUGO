@@ -32,6 +32,7 @@
 						</svg>
 					</span>
 				</button>
+
 				<strong class="text-xl uppercase font-bold">daifugo</strong>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
