@@ -5,7 +5,7 @@ To run the Svelte app, follow these steps:
 1. Open a terminal in the root directory of your Svelte project.
 <!-- code block -->
 
-    ```bash
+    ```
     cd my-skeleton-app
     ```
 2. Install the dependencies by running `npm install`.
