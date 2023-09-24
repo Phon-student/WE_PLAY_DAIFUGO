@@ -1,6 +1,9 @@
 <script lang="ts">
 	import '../app.postcss';
 
+	//input
+	let currentMessage = '';
+
 	// Skeleton UI
 	import { AppBar, AppShell, Avatar, Drawer, getDrawerStore } from '@skeletonlabs/skeleton';
 	import Navigation from '$lib/components/Navigation.svelte';
@@ -60,5 +63,11 @@
 	</div>
 	<!-- ---- / ---- -->
 	<!-- (pageFooter) -->
+	<svelte:fragment slot="pageFooter">
+		<label class="label flex items-center">
+			<input class="input flex-1 mr-2" type="text" placeholder="Enter your text here..." />
+			<button class="btn btn-sm btn variant-filled-primary mr-4">Send</button>
+		</label>
+	</svelte:fragment>
 	<!-- (footer) -->
 </AppShell>
