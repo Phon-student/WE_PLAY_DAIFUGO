@@ -1,6 +1,5 @@
 <script>
     import RankTable from "$lib/components/RankTable.svelte";
-	import RoomTable from "$lib/components/RoomTable.svelte";
 </script>
 
 <!-- text in middle above table -->
