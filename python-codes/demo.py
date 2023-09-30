@@ -34,16 +34,40 @@ class Game:
                                      3: None,
                                      4: None}}
 
+    def printhand(self, hand):
+        print("Your hand is: ", hand)
+        print(' '*16, end='')       
+        for n, i in enumerate(hand):
+            if deck.index(i) < 28 or deck.index(i) > 47:
+                print(f"   {n}       "[:10], end='')
+            elif deck.index(i) < 32:
+                print(f"   {n}        "[:11], end='')
+            elif deck.index(i) < 48:
+                print(f"    {n}        "[:12], end='')
+        print('\n')
+    
     def players(self, player1, player2, player3, player4):
         self.player_names = [Player(player1), Player(player2), Player(player3), Player(player4)]
 
-    def scoring(self, round):
-        self.finished_players[round][1].score += 2*round
-        self.finished_players[round][2].score += 1*round
-        self.finished_players[round][3].score -= 1*round
-        self.finished_players[round][4].score -= 2*round
+    def scoring(self):
+        for round in range(1, 3):
+            self.finished_players[round][1].score += 2*round
+            self.finished_players[round][2].score += 1*round
+            self.finished_players[round][3].score -= 1*round
+            self.finished_players[round][4].score -= 2*round
+            # for j in range(1, 5):
+            #     print(f"{self.finished_players[round][j].player_name}'s score is: {self.finished_players[round][j].score}")
+        print(f"-----------------------------------------------------\n")
+        for i in self.player_names:
+            print(f"{i.player_name}'s score is: {i.score}")
     
-    def run(self, round):
+    def run(self):
+        self.runround(1)
+        self.runround(2)
+    
+    def runround(self, round):
+        self.round = round
+        self.middle_card = None
         self.players = self.player_names.copy()
         self.nextposition = 1
         self.playerfinish = False
@@ -52,12 +76,60 @@ class Game:
 
         if round == 1:
             self.player_turn(self.find_starter(), 'cw')
+        else:
+            direction = 'ccw'  
+            print(f'-----------------------------------------------------\n')
+            print(f"Hi, {self.finished_players[1][1].player_name}!")
+            self.printhand(self.finished_players[1][1].hand)
+                
+            while True:   
+                king_swap = input("Please select 2 cards to swap with slave: ")
+                
+                try:
+                    king_swap = [int(i) for i in king_swap.split(' ')]
+                    if len(king_swap) != 2:
+                        raise Exception
+                    self.finished_players[1][1].hand[king_swap[0]], self.finished_players[1][4].hand[-1], self.finished_players[1][1].hand[king_swap[1]], self.finished_players[1][4].hand[-2] = self.finished_players[1][4].hand[-1], self.finished_players[1][1].hand[king_swap[0]], self.finished_players[1][4].hand[-2], self.finished_players[1][1].hand[king_swap[1]]
+                    break
+                except:
+                    print("\033[F\033[K", end="")
+                    print("--- Invalid input ---", end="\r")
+                    sleep(1)
+            
+            print("\033[F\033[K"*7, end="")
+            
+            print(f'-----------------------------------------------------\n')
+            print(f"Hi, {self.finished_players[1][2].player_name}!")
+            self.printhand(self.finished_players[1][2].hand)
+                
+            while True:
+                try:    
+                    queen_swap = int(input(f"{self.finished_players[1][2].player_name} please select 1 card to swap with vice-slave: "))
+                    self.finished_players[1][2].hand[queen_swap], self.finished_players[1][3].hand[-1] = self.finished_players[1][3].hand[-1], self.finished_players[1][2].hand[queen_swap]
+                    break
+                except:
+                    print("\033[F\033[K", end="")
+                    print("--- Invalid input ---", end="\r")
+                    sleep(1)
+            
+            print("\033[F\033[K"*7, end="")
 
+            for i in range(4):
+                self.players[i].hand = sorted(self.players[i].hand, key=deck.index)
+            
+            king_pos = self.players.index(self.finished_players[1][1])
+            slave_pos = self.players.index(self.finished_players[1][4])
+
+            if slave_pos - king_pos  in [1, -3]:
+                direction = 'cw'
+
+            self.player_turn(self.player_names.index(self.finished_players[1][4]), direction)
         
     def deal_cards(self):
         self.deck = list(deck).copy()
         # random.shuffle(self.deck)
         for i in range(4):
+            self.players[i].hand = []
             for j in range(13):
                 self.players[i].hand.append(self.deck.pop())
             self.players[i].hand = sorted(self.players[i].hand, key=deck.index)       
@@ -83,20 +155,10 @@ class Game:
         print("The middle card is: ", self.middle_card)
         # for i in range(len(self.players)):
         #     print(f"Player {i}'s hand is: ", self.players[i].hand)
-        print("Your hand is: ", current_player.hand)
-        
-        print(' '*16, end='')       
-        for n, i in enumerate(current_player.hand):
-            if deck.index(i) < 28 or deck.index(i) > 47:
-                print(f"   {n}       "[:10], end='')
-            elif deck.index(i) < 32:
-                print(f"   {n}        "[:11], end='')
-            elif deck.index(i) < 48:
-                print(f"    {n}        "[:12], end='')
-        print('\n')
-            
+        self.printhand(current_player.hand)
+                    
 # INPUT CHOICES
-        while 1:    
+        while True:    
             choice = input("What card would you like to play?: ")
             if choice == 'pass':
                 if not self.playerfinish:
@@ -168,10 +230,15 @@ class Game:
         
 # FINISHED PLAYER HANDLER
         if len(current_player.hand) < 10:
-            self.finished_players[self.nextposition] = self.players.pop(self.active_players[player])
+            self.finished_players[self.round][self.nextposition] = self.players.pop(self.active_players[player])
+            if self.nextposition == 1 and self.round == 2:
+                if current_player != self.finished_players[1][1]:
+                    self.finished_players[2][4] = self.players.pop(self.players.index(self.finished_players[1][1]))
+
             if len(self.players) == 1:
-                self.finished_players[self.nextposition + 1] = self.players[0]
+                self.finished_players[self.round][self.nextposition + 1] = self.players[0]
                 self.throw("Game ended")
+                print("\033[F\033[K"*7, end="")
                 return
             player -= 1
             self.active_players = list(range(len(self.players)))
@@ -185,13 +252,11 @@ class Game:
             self.middle_card = None
             player = self.active_players[0]
             self.active_players = list(range(len(self.players)))
-            for _ in range(7):
-                print("\033[F\033[K", end="")
+            print("\033[F\033[K"*7, end="")
             return self.player_turn(player, 'cw')            
         
 # CLEAR LINES
-        for _ in range(8):
-            print("\033[F\033[K", end="")
+        print("\033[F\033[K"*8, end="")
         
 # NEXT PLAYER
         if direction == 'cw':
@@ -205,13 +270,12 @@ class Game:
                 return self.player_turn((player - 1), direction)
             else:
                 player = len(self.active_players) - 1
-                return self.player_turn(len(self.active_players-1)), direction
-    
-        
-
+                return self.player_turn(len(self.active_players) - 1, direction)
+            
 game1 = Game()
 game1.players('player0', 'player1', 'player2', 'player3')
-game1.round1()
+game1.run()
+game1.scoring()
 
 
 
