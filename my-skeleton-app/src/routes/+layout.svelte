@@ -1,14 +1,18 @@
 <script lang="ts">
 	import '../app.postcss';
-
+	import {page} from '$app/stores';
 	//input
 	let currentMessage = '';
+
+	//output
+	let messages = [];
 
 	// Skeleton UI
 	import { AppBar, AppShell, Avatar, Drawer, getDrawerStore } from '@skeletonlabs/skeleton';
 	import Navigation from '$lib/components/Navigation.svelte';
-	import type {DrawerSettings, DrawerStore, LightSwitch} from '@skeletonlabs/skeleton';
+	import {LightSwitch, type DrawerSettings, type DrawerStore} from '@skeletonlabs/skeleton';
 	import { initializeStores } from '@skeletonlabs/skeleton';
+	import path from 'path';
 	initializeStores();
 
 	const drawerStore = getDrawerStore();
@@ -16,6 +20,10 @@
 	function drawerOpen() {
 		drawerStore.open();
 	}
+
+
+
+	// Chat UI
 </script>
 
 <Drawer>
@@ -49,6 +57,7 @@
 					border="border-4 border-surface-300-600-token hover:!border-primary-500"
 					cursor="cursor-pointer" 
 				/>
+				<LightSwitch />
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
@@ -64,6 +73,9 @@
 	<!-- ---- / ---- -->
 	<!-- (pageFooter) -->
 	<svelte:fragment slot="pageFooter">
+		{#if $page.path === '/lobby'}
+			<p>{$page.url}</p>
+		{/if}
 		<label class="label flex items-center">
 			<input class="input flex-1 mr-2" type="text" placeholder="Enter your text here..." />
 			<button class="btn btn-sm btn variant-filled-primary mr-4">Send</button>

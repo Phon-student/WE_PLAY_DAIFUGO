@@ -1,5 +1,6 @@
-<script>
+<script lang="ts">
     import { onMount } from 'svelte';
+    import {goto} from '$app/navigation';
     
     export let tableArr = [
         { RoomName: "Jobby", RoomID: "999", Password: "None", Players: "1/4" },
@@ -11,7 +12,13 @@
 
     function joinRoom() {
         tableState = false;
+        
+        // goto lobby
+
+        goto("/lobby");
     }
+
+
 
 
 
