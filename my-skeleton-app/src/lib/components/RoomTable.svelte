@@ -33,7 +33,9 @@
                 <th>Room ID</th>
                 <th>Password</th>
                 <th>Players</th>
-                <th></th>
+                <th class="text-middle">
+                    <button class="btn btn-sm btn variant-filled-primary align-middle">Create Room</button>
+                </th>
             </tr>
         </thead>
         <tbody>

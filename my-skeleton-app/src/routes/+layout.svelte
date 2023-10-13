@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.postcss';
 	import {page} from '$app/stores';
+	import {onMount} from 'svelte';
 	//input
 	let currentMessage = '';
 
@@ -73,13 +74,14 @@
 	<!-- ---- / ---- -->
 	<!-- (pageFooter) -->
 	<svelte:fragment slot="pageFooter">
+	
+	
 		{#if $page.path === '/lobby'}
 			<p>{$page.url}</p>
 		{/if}
-		<label class="label flex items-center">
-			<input class="input flex-1 mr-2" type="text" placeholder="Enter your text here..." />
-			<button class="btn btn-sm btn variant-filled-primary mr-4">Send</button>
-		</label>
+		
+		
+		
 	</svelte:fragment>
 	<!-- (footer) -->
 </AppShell>
