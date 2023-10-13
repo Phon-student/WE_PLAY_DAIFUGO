@@ -27,3 +27,5 @@ To run the app in dev mode, follow these steps:
     ```bash
     npm run dev
     ```
+
+6. Deploy in Vercel
