@@ -47,10 +47,10 @@
 	<slot />
 	<!-- ---- / ---- -->
 	<svelte:fragment slot="pageFooter">
-	<div class="h-full grid grid-rows-[1fr_320px] gap-1 ">
+	<div class="h-full grid grid-rows-[1fr_200px] gap-1 ">
 		<div class="bg-surface-500/30 p-4 overflow-y-auto">
 			
-			<section class="w-full max-h-[400px] p-4 overflow-y-auto space-y-4">
+			<section class="w-full max-h-[200px] p-4 overflow-y-auto space-y-4">
 				{#each messagesFeed as bubble, i}
 					{#if bubble.host === true}
 						<!-- Host Message Bubble -->
@@ -89,7 +89,7 @@
 					
 			
 		</div>
-		<div class="bg-surface-500/30 p-4 inline-block">
+		<div class="bg-surface-500/30 p-1 inline-block">
 			<!-- <div class="flex justify-between items-center">
 				<input type="text" class="input input-ghost w-full" placeholder="Type a message..." />
 				<button class="btn btn-sm btn variant-filled-primary">Send</button>
@@ -105,7 +105,7 @@
 					placeholder="Write a message..."
 					rows="1"
 				/>
-				<button class="variant-filled-primary">Send</button>
+				<button class="variant-filled-secondary">Send</button>
 			</div>
 					
 		</div>
