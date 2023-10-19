@@ -2,6 +2,10 @@
 <script>
     import { AppBar, AppShell } from '@skeletonlabs/skeleton';
 	import { Avatar } from '@skeletonlabs/skeleton';
+	import {onMount} from 'svelte';
+
+
+
 
 	let currentMessage = '';
 
@@ -34,6 +38,22 @@
 		color: 'variant-soft-primary'
 		},
 	];
+
+	const sendChat = () =>{
+		// console.log(currentMessage);
+		// console.log(messagesFeed);
+		messagesFeed = [...messagesFeed, {
+			id: messagesFeed.length,
+			host: false,
+			avatar: 23,
+			name: 'anyafan',
+			timestamp: 'Yesterday @ 2:50pm',
+			message: currentMessage,
+			color: 'variant-soft-primary'
+		}];
+		currentMessage = '';
+		// console.log(messagesFeed);
+	}
 </script>
 
 
@@ -105,7 +125,7 @@
 					placeholder="Write a message..."
 					rows="1"
 				/>
-				<button class="variant-filled-secondary">Send</button>
+				<button class="variant-filled-secondary" on:click={sendChat}>Send</button>
 			</div>
 					
 		</div>

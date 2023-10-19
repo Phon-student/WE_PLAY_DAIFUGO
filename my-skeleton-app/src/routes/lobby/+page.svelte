@@ -1,26 +1,56 @@
 <script>
-    import { post as startGameApi } from '$routes/api.js';
-</script>
+    import axios from 'axios';
+    import { onMount } from 'svelte';
 
-
-<button class="btn btn-sm btn variant-filled-primary mr-4" on:click={startGameApi}>Start Game</button>
-
-async function startGame(){
-    try {
-        const res = await fetch('/api/start-game', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                roomID: roomID,
-                userID: userID
-            })
-        });
-        const data = await res.json();
-        console.log(data);
-    }catch(err){
-        console.log(err);
+    let gameInfo = null;
+    let scores = null;
+    let playerName = null;
+    let card = null;
+    
+    const startGame = async () => {
+        try {
+            const response = await axios.post("/start-game");
+            gameInfo = response.data.game_info;
+            // Update the UI to display gameInfo
+            responseContainer.innerText = "Game started!"; // Update the response container
+        } catch (error) {
+            console.error("Error starting the game", error);
+        }
     };
 
-};
+    const playCard = async (playerName, card) => {
+        try {
+            const response = await axios.post("/play-card", { player_name: playerName, card: card });
+            gameInfo = response.data.game_info;
+            // Update the UI to display gameInfo
+        } catch (error) {
+            console.error("Error playing a card", error);
+        }
+    };
+
+    const getScores = async () => {
+        try {
+            const response = await axios.get("/get-scores");
+            scores = response.data.scores;
+            // Update the UI to display scores
+        } catch (error) {
+            console.error("Error getting scores", error);
+        }
+    };
+</script>
+
+<div id="response-container">
+    <!-- This is where the response will be displayed -->
+</div>
+
+<button class="btn btn-primary variant-filled-secondary" on:click={startGame}>Start Game</button>
+<input type="text" bind:value={playerName} placeholder="Player Name">
+<input type="text" bind:value={card} placeholder="Card (e.g., [3, 'club'])">
+<button class="btn btn-primary variant-filled-secondary" on:click={() => playCard(playerName, card)}>Play Card</button>
+<button class="btn btn-primary variant-filled-secondary" on:click={getScores}>Get Scores</button>
+
+<style>
+    .btn {
+        margin: 0.5rem;
+    }
+</style>

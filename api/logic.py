@@ -1,6 +1,15 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
+
 
 import itertools
 import random
@@ -146,34 +155,38 @@ class Game:
 # Implement the main FastAPI endpoints, e.g., start_game, play_card, get_scores, etc.
 
 
-@app.post("/start_game")
-async def start_game(player1: str, player2: str, player3: str, player4: str):
+@app.post("/start-game")
+async def start_game():
+    # Create a new game instance, deal cards, and return relevant game information
     game = Game()
-    game.players(player1, player2, player3, player4)
+    game.players("Player1", "Player2", "Player3", "Player4")
     game.run()
-    return game.finish_position
+    return {"message": "Game started", "game_info": ...}  # Replace ... with relevant game data
 
-@app.post("/play_card/{player}/{card}")
-async def play_card(player: int, card: int):
-    try:
-        game = Game()
-        game.player_turn_loop(player, card)
-        return game.finish_position
-    except:
-        raise HTTPException(status_code=400, detail="Invalid input")
+# Play a card
+@app.post("/play-card")
+async def play_card(player_name: str, card: tuple):
+    # Implement logic to play a card for the specified player
+
     
-@app.get("/get_scores")
-async def get_scores():
-    try:
-        game = Game()
-        return game.finish_position
-    except:
-        raise HTTPException(status_code=400, detail="Invalid input")
+    # Update game state and return relevant game information
+    return {"message": f"{player_name} played a card", "game_info": ...}  # Replace ... with relevant game data
 
+# Get scores
+@app.get("/get-scores")
+async def get_scores():
+    # Return the current scores of the game
+    return {"scores": ...}  # Replace ... with the actual score data
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 # Run the FastAPI app if executed directly
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="localhost", port=8000)
+
+    
 
 
