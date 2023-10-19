@@ -9,7 +9,7 @@
     
     const startGame = async () => {
         try {
-            const response = await axios.post("/start-game");
+            const response = await axios.get("/start-game");
             gameInfo = response.data.game_info;
             // Update the UI to display gameInfo
             responseContainer.innerText = "Game started!"; // Update the response container
@@ -20,7 +20,7 @@
 
     const playCard = async (playerName, card) => {
         try {
-            const response = await axios.post("/play-card", { player_name: playerName, card: card });
+            const response = await axios.get("/play-card", { player_name: playerName, card: card });
             gameInfo = response.data.game_info;
             // Update the UI to display gameInfo
         } catch (error) {
